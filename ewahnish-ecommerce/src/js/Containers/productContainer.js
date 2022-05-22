@@ -25,12 +25,15 @@ class ProductContainer {
     }
 
     static getId() {
-        let theId = 0;
+        let theId;
         fs.readFile('./src/files/idgenerator.txt', 'utf-8', (error, contenido) => {
             if (error){
+                let theId = 0;
                 ProductContainer.setId(theId);
+                ProductContainer.id = theId;
             } else {
-                theId = Number(contenido);
+                ProductContainer.id = Number(contenido);
+                theId = ProductContainer.id;
                 console.log(theId);
             }
         })
@@ -38,7 +41,7 @@ class ProductContainer {
     }
 
     static setId(theId) {
-        fs.writeFile('./src/files/idgenerator.txt', 'utf-8', theId , (error) => {
+        fs.writeFile('./src/files/idgenerator.txt', 'utf-8', Number(theId) , error => {
             if (error){
                 console.log(Error)
             } else {
@@ -49,15 +52,16 @@ class ProductContainer {
 
     save() {
         ProductContainer.getId();
-        const theId = ProductContainer.idIncrement();
+        let theId = Number(ProductContainer.idIncrement());
+        console.log(theId)
         const appendProduct = {
-            "id": theId,
-            "title": this.title,
-            "price": this.price,
-            "thumbnail": this.thumbnail
+            id: theId,
+            title: this.title,
+            price: this.price,
+            thumbnail: this.thumbnail
         }
-
-        fs.appendFile('./src/files/products.txt', JSON.stringify(appendProduct), error => {
+        console.log(appendProduct)
+        fs.appendFile('./src/files/products.txt', appendProduct, error => {
             if (error) {
                 throw new Error("Error de grabacion ", error);
             } else {
@@ -105,10 +109,9 @@ class ProductContainer {
         });
     }
 
-    static id;
-
-    static idIncrement() {
-        ProductContainer.id++;
+    idIncrement(theId) {
+        theId++;
+        return theId;
     }
 
 }
