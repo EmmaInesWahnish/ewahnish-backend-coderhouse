@@ -1,0 +1,1 @@
+{"id":1,"title":"Un objeto","price":500,"thumbnail":"la imagen"}{"id":1,"title":"Un objeto","price":500,"thumbnail":"la imagen"}{"id":1,"title":"Un objeto","price":500,"thumbnail":"la imagen"}

@@ -9,75 +9,59 @@ class ProductContainer {
 
     static getAll() {
         let products = [{}];
-        fs.readFile('./src/files/products.txt', 'utf-8', (error, contenido) => {
-            if (error) {
-                console.log("Error de lectura ", error)
-            } else {
-                try {
-                    products = JSON.parse(contenido);
-                    console.log(products);
-                } catch (err) {
-                    throw new Error("Error de conversion ", Error)
-                }
-            }
-        })
-        return products;
+        fs.promises.readFile('./src/files/products.txt', 'utf-8',)
+            .then((contenido) => {
+                products = JSON.parse(contenido);
+                console.log(products);
+            })
+            .catch((error) => { console.log("Error de lectura ", error) })
     }
 
     static getId() {
-        let theId;
-        fs.readFile('./src/files/idgenerator.txt', 'utf-8', (error, contenido) => {
-            if (error){
-                let theId = 0;
-                ProductContainer.setId(theId);
-                ProductContainer.id = theId;
-            } else {
-                ProductContainer.id = Number(contenido);
-                theId = ProductContainer.id;
-                console.log(theId);
-            }
-        })
+        let theId = 0;
+        fs.promises.readFile('./src/files/idgenerator.txt', 'utf-8',)
+            .then((contenido) => {
+                theId = Number(contenido)
+            })
+            .catch((error) => {
+                console.log("No existe el archivo");
+                theId = 0;
+                //ProductContainer.setId(theId)
+            })
+        console.log(theId)
         return theId;
     }
 
     static setId(theId) {
-        fs.writeFile('./src/files/idgenerator.txt', 'utf-8', Number(theId) , error => {
-            if (error){
-                console.log(Error)
-            } else {
-                console.log("Id guardado")
-            }
-        })
+        fs.promises.writeFile('./src/files/idgenerator.txt', 'utf-8', Number(theId))
+            .catch((error) => { console.log(error) })
     }
 
     save() {
-        ProductContainer.getId();
-        let theId = Number(ProductContainer.idIncrement());
-        console.log(theId)
+        let theId = ProductContainer.getId();
+        let productId = ProductContainer.idIncrement(theId);
+        console.log(productId);
         const appendProduct = {
-            id: theId,
+            id: productId,
             title: this.title,
             price: this.price,
             thumbnail: this.thumbnail
         }
-        console.log(appendProduct)
-        fs.appendFile('./src/files/products.txt', appendProduct, error => {
-            if (error) {
-                throw new Error("Error de grabacion ", error);
-            } else {
-                console.log("Archivo guardado");
-            }
-        });
+        fs.promises.appendFile('./src/files/products.txt', JSON.stringify(appendProduct),)
+            .catch((error) => { console.log("Error de grabacion ", error) })
+        fs.promises.writeFile('./src/files/idgenerator.txt', `${productId}`,)
+            .then(console.log(ProductContainer.getAll()))
+            .catch((error) => { console.log("Error de grabacion ", error) })
     }
 
     static getById(findId) {
-        this.getAll();
+        ProductContainer.getAll();
         const index = products.findIndex(element => element.id === findId);
         return products[index];
     }
 
     static deleteById(findId) {
-        this.getAll();
+        ProductContainer.getAll();
         const index = products.findIndex(element => element.id === findId);
         let newProducts = {}
         for (let i = 0; i < products.length; i++) {
@@ -90,13 +74,10 @@ class ProductContainer {
                 })
             }
         }
-        fs.writeFile('./src/files/products.txt', JSON.stringify(newProducts), error => {
-            if (error) {
-                throw new Error("Error de grabacion ", error);
-            } else {
-                console.log("Archivo guardado");
-            }
-        });
+        console.log(newProducts)
+        fs.promises.writeFile('./src/files/products.txt', JSON.stringify(newProducts),)
+            .then(console.log(ProductContainer.getAll()))
+            .catch((error) => { console.log("Error de grabacion ", error) })
     }
 
     static deleteAll() {
@@ -109,15 +90,13 @@ class ProductContainer {
         });
     }
 
-    idIncrement(theId) {
+    static idIncrement(theId) {
         theId++;
         return theId;
     }
 
 }
 
-product = new ProductContainer( "Un objeto",500,"la imagen");
+product = new ProductContainer("Un objeto", 500, "la imagen");
 console.log(product)
 product.save();
-
-console.log(ProductContainer.getAll());
