@@ -1,14 +1,5 @@
-import pkg from "./Containers/productContainer.js";
-const {ProductContainer} = pkg;
-
-product = new ProductContainer(
-    {
-        title: "Un objeto",
-        price: 500,
-        thumbnail: "la imagen"
-    });
-console.log(product[i])
+import Products from "./Containers/productContainer.js";
+let i = 6
+const product = new Products(`Producto ${i}`, 500, `imagen ${i}`);
 product.save();
-
-console.log(ProductContainer.getAll());
 
