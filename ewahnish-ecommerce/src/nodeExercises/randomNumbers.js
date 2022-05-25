@@ -17,10 +17,6 @@ for (let i = 0; i < 10000; i++){
 
 console.log(random_numbers);
 
-const sumoPrecio = (oneObject) => {
-    return Number(oneObject.precio);
-}
-
 let ocurrencias = 0;
 
 random_numbers.forEach(function(element){
