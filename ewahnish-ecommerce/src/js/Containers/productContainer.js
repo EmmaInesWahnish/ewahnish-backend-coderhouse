@@ -21,75 +21,45 @@ export default class Products {
             })
     }
 
-    save() {
+    static save(product) {
         //El archivo idgenerator.txt guarda el ultimo id utilizado
-        fs.promises.readFile('./src/files/idgenerator.txt', 'utf-8',)
+        let productId = 0;
+        let newProduct;
+        fs.promises.readFile('./src/files/products.txt', 'utf-8',)
             .then((contenido) => {
-                let productId = Number(contenido);
-                //se prepara el nuevo id
-                productId = productId + 1;
-                //se construye el registro que se va a grabar
-                let newProduct = {
-                    id: productId,
-                    title: this.title,
-                    price: this.price,
-                    thumbnail: this.thumbnail
-                }
-                console.log("Producto a ser agregado a products.txt ", newProduct);
-                fs.promises.readFile('./src/files/products.txt', 'utf-8',)
-                    .then((contenido) => {
-                        //se obtiene el array de productos
-                        const products = JSON.parse(contenido)
-                        //se incorpora al array el nuevo producto mediante push
-                        products.push(newProduct);
-                        fs.promises.writeFile('./src/files/products.txt', JSON.stringify(products),)
-                            .then(() => { Products.getAll() })
-                            .catch((error) => { console.log("Error de grabacion ", error) })
-                        fs.promises.writeFile('./src/files/idgenerator.txt', `${productId}`,)
-                            .catch((error) => { console.log("Error de grabacion ", error) })
-                    })
-                    .catch((error) => {
-                        const products = [];
-                        products.push(newProduct);
-                        fs.promises.writeFile('./src/files/products.txt', JSON.stringify(products),)
-                            .then(() => { Products.getAll() })
-                            .catch((error) => { console.log("Error de grabacion ", error) })
-                        fs.promises.writeFile('./src/files/idgenerator.txt', `${productId}`,)
-                            .catch((error) => { console.log("Error de grabacion ", error) })
-                    })
-
+                const products = JSON.parse(contenido);
+                productId = products[products.length - 1].id;
+                console.log(productId)
+                product.forEach(function (element) {
+                    productId = productId + 1;
+                    newProduct = {
+                        id: productId,
+                        title: element.title,
+                        price: element.price,
+                        thumbnail: element.thumbnail
+                    };
+                    //se incorpora al array el nuevo producto mediante push
+                    products.push(newProduct);
+                })
+                fs.promises.writeFile('./src/files/products.txt', JSON.stringify(products),)
+                    .catch((error) => { console.log("Error de grabacion ", error) })
             })
             .catch((error) => {
-                //se trata del primer id a ser ser incorporado
-                const productId = 1;
-                console.log("productId ", productId);
-                let newProduct = {
-                    id: productId,
-                    title: this.title,
-                    price: this.price,
-                    thumbnail: this.thumbnail
-                }
-                console.log("Producto a ser agregado a products.txt con id 1 ", newProduct);
-                fs.promises.readFile('./src/files/products.txt', 'utf-8',)
-                    .then((contenido) => {
-                        const products = JSON.parse(contenido);
-                        products.push(newProduct);
-                        fs.promises.writeFile('./src/files/products.txt', JSON.stringify(products),)
-                            .then(() => { Products.getAll() })
-                            .catch((error) => { console.log("Error de grabacion productos.txt ", error) })
-                        fs.promises.writeFile('./src/files/idgenerator.txt', `${productId}`,)
-                            .catch((error) => { console.log("Error de grabacion idgenerator.txt ", error) })
-                    })
-                    .catch((error) => {
-                        const products = [];
-                        products.push(newProduct);
-                        fs.promises.writeFile('./src/files/products.txt', JSON.stringify(products),)
-                            .then(() => { Products.getAll() })
-                            .catch((error) => { console.log("Error de grabacion productos.txt ", error) })
-                        fs.promises.writeFile('./src/files/idgenerator.txt', `${productId}`,)
-                            .catch((error) => { console.log("Error de grabacion idgenerator.txt", error) })
-                    })
-
+                console.log("File products.txt is empty ", error)
+                const products = [];
+                product.forEach(function (element) {
+                    productId = productId + 1;
+                    newProduct = {
+                        id: productId,
+                        title: element.title,
+                        price: element.price,
+                        thumbnail: element.thumbnail
+                    }
+                    //se incorpora al array el nuevo producto mediante push
+                    products.push(newProduct);
+                })
+                fs.promises.writeFile('./src/files/products.txt', JSON.stringify(products),)
+                    .catch((error) => { console.log("Error de grabacion ", error) })
             })
     }
 
@@ -98,9 +68,12 @@ export default class Products {
             .then((contenido) => {
                 const products = JSON.parse(contenido)
                 const index = products.findIndex(element => element.id === findId);
-                console.log(index);
                 searchedProduct = products[index]
-                console.log("Producto buscado ", searchedProduct)
+                if (searchedProduct != undefined) {
+                    console.log("Producto buscado ", searchedProduct, " con id ", findId);
+                } else {
+                    console.log("No hay un producto con id ", findId);
+                }
             })
             .catch((error) => {
                 console.log("Error de lectura archivo products.txt ", error)
@@ -114,14 +87,17 @@ export default class Products {
             .then((contenido) => {
                 const products = JSON.parse(contenido)
                 const whichId = products.findIndex(element => element.id === findId);
+                if(whichId !== -1){
                 let removedProduct = [];
-                console.log("Position ", whichId)
-                removedProduct = products.splice(whichId,1);
+                console.log("Posicion del producto a eliminar ", whichId)
+                removedProduct = products.splice(whichId, 1);
                 console.log("Producto eliminado ", removedProduct);
                 fs.promises.writeFile('./src/files/products.txt', JSON.stringify(products),)
                     .then(() => { Products.getAll() })
                     .catch((error) => { console.log("Error de grabacion en products.txt ", error) })
-
+                } else {
+                    console.log("No hay un producto con id ", findId);
+                }
             })
             .catch((error) => {
                 console.log("Error de lectura en products.txt ", error)
@@ -129,16 +105,8 @@ export default class Products {
     }
 
     static deleteAll() {
-        //borra el archivo products
+        //borra el archivo products.txt
         fs.unlink('./src/files/products.txt', error => {
-            if (error) {
-                console.log("Se produjo un error ", error);
-            } else {
-                console.log("Archivo borrado");
-            }
-        });
-        //borra el archivo idgenerator.txt
-        fs.unlink('./src/files/idgenerator.txt', error => {
             if (error) {
                 console.log("Se produjo un error ", error);
             } else {
