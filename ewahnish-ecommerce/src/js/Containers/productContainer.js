@@ -87,14 +87,14 @@ export default class Products {
             .then((contenido) => {
                 const products = JSON.parse(contenido)
                 const whichId = products.findIndex(element => element.id === findId);
-                if(whichId !== -1){
-                let removedProduct = [];
-                console.log("Posicion del producto a eliminar ", whichId)
-                removedProduct = products.splice(whichId, 1);
-                console.log("Producto eliminado ", removedProduct);
-                fs.promises.writeFile('./src/files/products.txt', JSON.stringify(products),)
-                    .then(() => { Products.getAll() })
-                    .catch((error) => { console.log("Error de grabacion en products.txt ", error) })
+                if (whichId !== -1) {
+                    let removedProduct = [];
+                    console.log("Posicion del producto a eliminar ", whichId)
+                    removedProduct = products.splice(whichId, 1);
+                    console.log("Producto eliminado ", removedProduct);
+                    fs.promises.writeFile('./src/files/products.txt', JSON.stringify(products),)
+                        .then(() => { Products.getAll() })
+                        .catch((error) => { console.log("Error de grabacion en products.txt ", error) })
                 } else {
                     console.log("No hay un producto con id ", findId);
                 }
@@ -115,4 +115,18 @@ export default class Products {
         });
     }
 
+    static getRandomProduct() {
+        let productLastId = 0;
+        fs.promises.readFile('./src/files/products.txt', 'utf-8',)
+            .then((contenido) => {
+                const products = JSON.parse(contenido);
+                productLastId = products[products.length - 1].id;
+                let randomId = Math.floor((Math.random()*productLastId)+1);
+                let randomProduct = []
+                Products.getById(randomId, randomProduct);
+            })
+            .catch((error) => {
+                console.log("File products.txt is empty ", error)
+            });
+    }
 }

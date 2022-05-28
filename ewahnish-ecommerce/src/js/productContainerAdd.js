@@ -1,14 +1,14 @@
 import Products from "./Containers/productContainer.js";
 const platos = [
     {
-        title: "Pasta a los cuatro quesos",
+        title: "Hot Dogs",
         price: 350,
-        thumbnail: "../assets/spaetzle.png",
+        thumbnail: "../assets/hotDogKids.jpg",
     },
     {
-        title: "Locro con carne vacuna y porcina",
+        title: "Panqueques Americanos",
         price: 450,
-        thumbnail: "../assets/locro.png",
+        thumbnail: "../assets/pancakes.png",
     }
 ]
 
