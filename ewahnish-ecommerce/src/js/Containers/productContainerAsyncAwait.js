@@ -8,60 +8,59 @@ export default class Products {
         this.thumbnail = thumbnail;
     }
 
-    static getAll(res) {
+    static async getAll() {
         //devuelve todos los productos
-        let array=[];
-        fs.promises.readFile('./src/files/products.txt', 'utf-8',)
-            .then((contenido) => {
-                array = JSON.parse(contenido)
-                console.log("I return the product list ", array)
-                res.send({ mensaje: 'Product List', products: array})
-            })
-            .catch((error) => {
-                array = [];
-                console.log("File products.txt does not exist or is damaged", error)
-            })
+        let array = [];
+        try {
+            const contenido = await fs.promises.readFile('./src/files/products.txt', 'utf-8',)
+            array = JSON.parse(contenido)
+            console.log("I return the product list ", array)
+        }
+        catch (error) {
+            array = [];
+            console.log("File products.txt does not exist or is damaged", error)
+        }
     }
 
-    static save(product) {
+    static async save(product) {
         let productId = 0;
         let newProduct;
-        fs.promises.readFile('./src/files/products.txt', 'utf-8',)
-            .then((contenido) => {
-                const products = JSON.parse(contenido);
-                productId = products[products.length - 1].id;
-                console.log(productId)
-                product.forEach(function (element) {
-                    productId = productId + 1;
-                    newProduct = {
-                        id: productId,
-                        title: element.title,
-                        price: element.price,
-                        thumbnail: element.thumbnail
-                    };
-                    //new product added to array using push
-                    products.push(newProduct);
-                })
-                fs.promises.writeFile('./src/files/products.txt', JSON.stringify(products),)
-                    .catch((error) => { console.log("Write error ", error) })
+        try {
+            const contenido = await fs.promises.readFile('./src/files/products.txt', 'utf-8',)
+            const products = JSON.parse(contenido);
+            productId = products[products.length - 1].id;
+            console.log(productId)
+            product.forEach(function (element) {
+                productId = productId + 1;
+                newProduct = {
+                    id: productId,
+                    title: element.title,
+                    price: element.price,
+                    thumbnail: element.thumbnail
+                };
+                //new product added to array using push
+                products.push(newProduct);
             })
-            .catch((error) => {
-                console.log("File products.txt is empty ", error)
-                const products = [];
-                product.forEach(function (element) {
-                    productId = productId + 1;
-                    newProduct = {
-                        id: productId,
-                        title: element.title,
-                        price: element.price,
-                        thumbnail: element.thumbnail
-                    }
-                    //new product added to array using push
-                    products.push(newProduct);
-                })
-                fs.promises.writeFile('./src/files/products.txt', JSON.stringify(products),)
-                    .catch((error) => { console.log("Write error ", error) })
+            fs.promises.writeFile('./src/files/products.txt', JSON.stringify(products),)
+                .catch((error) => { console.log("Write error ", error) })
+        }
+        catch (error) {
+            console.log("File products.txt is empty ", error)
+            const products = [];
+            product.forEach(function (element) {
+                productId = productId + 1;
+                newProduct = {
+                    id: productId,
+                    title: element.title,
+                    price: element.price,
+                    thumbnail: element.thumbnail
+                }
+                //new product added to array using push
+                products.push(newProduct);
             })
+            fs.promises.writeFile('./src/files/products.txt', JSON.stringify(products),)
+                .catch((error) => { console.log("Write error ", error) })
+        }
     }
 
     static getById(findId, searchedProduct, res) {
@@ -72,7 +71,7 @@ export default class Products {
                 searchedProduct = products[index]
                 if (searchedProduct != undefined) {
                     console.log("Random product ", searchedProduct, " with id ", findId);
-                    res.send({ mensaje: 'Random Product', products: searchedProduct})
+                    res.send({ mensaje: 'Random Product', products: searchedProduct })
                 } else {
                     console.log("There in no product with id ", findId);
                 }
@@ -123,7 +122,7 @@ export default class Products {
             .then((contenido) => {
                 const products = JSON.parse(contenido);
                 productLastId = products[products.length - 1].id;
-                let randomId = Math.floor((Math.random()*productLastId)+1);
+                let randomId = Math.floor((Math.random() * productLastId) + 1);
                 let randomProduct = []
                 Products.getById(randomId, randomProduct, res);
             })

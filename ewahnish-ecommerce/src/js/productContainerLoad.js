@@ -2,7 +2,7 @@ import Products from "./Containers/productContainer.js";
 const platos = [
     {
         title: "Cazuela de Mariscos",
-        price:500,
+        price: 500,
         thumbnail: "../assets/cazuela.png",
     },
     {
@@ -20,8 +20,32 @@ const platos = [
         price: 500,
         thumbnail: "../assets/cordero.png",
     },
+    {
+        title: "Frutillas",
+        price: 500,
+        thumbnail: "../assets/frutillas.jpg",
+    },
+    {
+        title: "Locro",
+        thumbnail: "../assets/locro.png",
+        price: 350
+    },
+    {
+        title: "Omelette",
+        price: 450,
+        thumbnail: "../assets/omeletteKids.jpg",
+    },
+    {
+        title: "Tiramisu",
+        price: 500,
+        thumbnail: "../assets/tiramisu.jpg",
+    },
 ]
 
+export default function productContainerLoad(){
+
 Products.save(platos);
+
+}
 
 
