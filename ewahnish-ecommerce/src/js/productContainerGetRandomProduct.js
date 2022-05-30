@@ -1,2 +1,2 @@
-import Products from "./Containers/productContainer.js";
+import Products from "./Containers/productContainerAsyncAwait.js";
 Products.getRandomProduct();

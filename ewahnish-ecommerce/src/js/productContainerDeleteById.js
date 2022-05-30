@@ -1,5 +1,5 @@
-import Products from "./Containers/productContainer.js";
-let delId = 0
+import Products from "./Containers/productContainerAsyncAwait.js";
+let delId = 3;
 Products.deleteById(delId);
 
 

@@ -1,3 +1,3 @@
-import Products from "./Containers/productContainer.js";
-let get = 0;
+import Products from "./Containers/productContainerAsyncAwait.js";
+let get = 8;
 Products.getById(get);

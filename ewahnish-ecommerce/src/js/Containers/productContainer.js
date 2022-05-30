@@ -8,18 +8,17 @@ export default class Products {
         this.thumbnail = thumbnail;
     }
 
-    static getAll(res) {
+    static getAll() {
         //devuelve todos los productos
         let array=[];
         fs.promises.readFile('./src/files/products.txt', 'utf-8',)
             .then((contenido) => {
                 array = JSON.parse(contenido)
                 console.log("I return the product list ", array)
-                res.send({ mensaje: 'Product List', products: array})
             })
             .catch((error) => {
                 array = [];
-                console.log("File products.txt does not exist or is damaged", error)
+                console.log("File products.txt does not exist or is damaged ", error)
             })
     }
 
@@ -64,15 +63,14 @@ export default class Products {
             })
     }
 
-    static getById(findId, searchedProduct, res) {
+    static getById(findId, searchedProduct) {
         fs.promises.readFile('./src/files/products.txt', 'utf-8',)
             .then((contenido) => {
                 const products = JSON.parse(contenido)
                 const index = products.findIndex(element => element.id === findId);
                 searchedProduct = products[index]
                 if (searchedProduct != undefined) {
-                    console.log("Random product ", searchedProduct, " with id ", findId);
-                    res.send({ mensaje: 'Random Product', products: searchedProduct})
+                    console.log("Searched product ", searchedProduct, " with id ", findId);
                 } else {
                     console.log("There in no product with id ", findId);
                 }
@@ -117,15 +115,14 @@ export default class Products {
         });
     }
 
-    static getRandomProduct(res) {
-        let productLastId = 0;
+    static getRandomProduct() {
         fs.promises.readFile('./src/files/products.txt', 'utf-8',)
             .then((contenido) => {
                 const products = JSON.parse(contenido);
-                productLastId = products[products.length - 1].id;
+                const productLastId = products[products.length - 1].id;
                 let randomId = Math.floor((Math.random()*productLastId)+1);
-                let randomProduct = []
-                Products.getById(randomId, randomProduct, res);
+                let randomProduct = [];
+                Products.getById(randomId, randomProduct);
             })
             .catch((error) => {
                 console.log("File products.txt is empty ", error)

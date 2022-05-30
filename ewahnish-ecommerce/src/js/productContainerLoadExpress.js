@@ -42,6 +42,10 @@ const platos = [
     },
 ]
 
+export default function productContainerLoad(){
+
 Products.save(platos);
+
+}
 
 

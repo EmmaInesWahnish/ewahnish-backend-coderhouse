@@ -7,9 +7,9 @@ const server = http.createServer((peticion, respuesta) => {
     let date = new Date(Date.now());
     let hour = date.getHours();
     
-    if (hour >= 6 && hour <= 12) {
+    if (hour >= 6 && hour < 12) {
       respuesta.end('Good morning');
-    } else if (hour >= 13 && hour <= 19) {
+    } else if (hour >= 13 && hour < 19) {
       respuesta.end('Good afternoon');
     } else {
       respuesta.end('Good night');

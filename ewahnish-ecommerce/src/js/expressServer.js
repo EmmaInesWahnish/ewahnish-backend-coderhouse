@@ -1,7 +1,7 @@
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-import Products from "./Containers/productContainer.js";
-import productContainerLoad from "./productContainerLoad.js"
+import Products from "./Containers/productContainerAsyncAwait.js";
+import productContainerLoad from "./productContainerLoadExpress.js"
 
 const express = require("express");
 const app = express();
@@ -18,10 +18,10 @@ server.on("error", error => console.log(`Server error ${error}`))
 
 // Routes
 app.get('/products', (req, res) => {
-    Products.getAll(res);
+    Products.getAllExpress(res);
  })
 
 app.get('/randomProduct', (req, res) => {
-    Products.getRandomProduct(res);
+    Products.getRandomProductExpress(res);
 }) 
  
