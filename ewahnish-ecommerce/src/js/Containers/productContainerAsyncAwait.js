@@ -149,6 +149,17 @@ export default class Products {
         });
     }
 
+    static async deleteLoadExpress(array) {
+        try {
+            //borra el archivo products.txt
+            const result = await fs.promises.unlink('./src/files/products.txt');
+            Products.save(array);
+        }
+        catch (error) {
+            console.log(error);     
+        }
+    }
+
     static async getRandomProduct() {
         try {
             const contenido = await fs.promises.readFile('./src/files/products.txt', 'utf-8',)

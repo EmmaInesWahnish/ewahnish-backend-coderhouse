@@ -42,10 +42,6 @@ const platos = [
     },
 ]
 
-export default function productContainerLoad() {
-
-    Products.deleteLoadExpress(platos)
-
-}
+Products.deleteLoadExpress(platos);
 
 

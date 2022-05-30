@@ -1,44 +1,34 @@
 import Products from "./Containers/productContainerAsyncAwait.js";
 const platos = [
     {
-        title: "Cazuela de Mariscos",
+        title: "Pancakes",
         price: 500,
-        thumbnail: "../assets/cazuela.png",
+        thumbnail: "../assets/pancakes.jpg",
     },
     {
-        title: "Choripan con Chimichurri",
-        thumbnail: "../assets/choripan.png",
+        title: "Pasta con Albondigas",
+        thumbnail: "../assets/pastaAlbondigas.jpg",
         price: 350
     },
     {
-        title: "Carne a la olla con verduras",
+        title: "Pancitos de Salchicha",
         price: 450,
-        thumbnail: "../assets/carne-a-la-olla.png",
+        thumbnail: "../assets/pigsInBlanket.jpg",
     },
     {
-        title: "Pierna de cordero rellena",
+        title: "Empanadas",
         price: 500,
-        thumbnail: "../assets/cordero.png",
+        thumbnail: "../assets/empanadas.png",
     },
     {
-        title: "Frutillas",
+        title: "Pasta a los cuatro quesos",
         price: 500,
-        thumbnail: "../assets/frutillas.jpg",
+        thumbnail: "../assets/spaetzle.png",
     },
     {
-        title: "Locro",
-        thumbnail: "../assets/locro.png",
+        title: "Hot Dogs",
+        thumbnail: "../assets/hotDogKids.jpg",
         price: 350
-    },
-    {
-        title: "Omelette",
-        price: 450,
-        thumbnail: "../assets/omeletteKids.jpg",
-    },
-    {
-        title: "Tiramisu",
-        price: 500,
-        thumbnail: "../assets/tiramisu.jpg",
     },
 ]
 
