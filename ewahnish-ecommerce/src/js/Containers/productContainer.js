@@ -61,6 +61,7 @@ export default class Products {
             })
             fs.promises.writeFile('./src/files/products.txt', JSON.stringify(products),)
                 .catch((error) => { console.log("Write error ", error) })
+            return productId;
         }
     }
 
