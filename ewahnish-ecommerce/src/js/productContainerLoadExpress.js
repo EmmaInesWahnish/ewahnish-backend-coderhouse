@@ -1,4 +1,4 @@
-import Products from "./Containers/productContainerAsyncAwaitB.js";
+import Products from "./Containers/productContainer.js";
 const platos = [
     {
         title: "Cazuela de Mariscos",
