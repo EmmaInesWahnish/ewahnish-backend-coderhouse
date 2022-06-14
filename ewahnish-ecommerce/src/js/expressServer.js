@@ -90,13 +90,90 @@ routerProducts.post('/', async (req, res) => {
             })
         }
         catch (error) {
+            res.send({
+                message: 'Ha ocurrido un error'
+            })
+        }
+
+    }
+    catch (error) {
+        console.log("An undetermined error has occured", error);
+    }
+})
+
+routerProducts.put('/:id', async (req, res) => {
+    const id = parseInt(req.params.id);
+    let receive = req.body;
+    console.log("The id ",id, "receive  ", receive)
+    try {
+        const products = await Products.getAll();
+        const index = products.findIndex(element => element.id === id);
+        const searchedProduct = products[index]
+        console.log(index, " Modifico ",searchedProduct)       
+        if (searchedProduct != undefined) {
+
+            products[index].title = receive.title;
+            products[index].price = receive.price;
+            products[index].thumbnail = receive.thumbnail;
+
+            console.log("deberia modificar ", products[index])
+            try {
+                await Products.save([]);
+                try {
+                    await Products.save(products)
+                    res.send({
+                        message: 'Modificado'
+                    })    
+                }
+                catch(error){
+                    res.send({
+                        message: 'No pudo cargar'
+                    })    
+                }
+            }
+            catch (error) {
                 res.send({
-                    message: 'Ha ocurrido un error'
+                    message: 'No pudo borrar'
                 })
             }
+        } else {
+            res.send({
+                message: 'No existe el producto'
+            })
+        }
+    }
+    catch (error) {
+        res.send({
+            message: 'Ha ocurrido un error'
+        })
+    }
 
+})
+
+routerProducts.delete('/:id', async (req, res) => {
+    const id = parseInt(req.params.id);
+    console.log(id);
+    if (!isNaN(id)) {
+        try {
+            const removedProduct = await Products.deleteById(id);
+            if (removedProduct.length === 0) {
+                res.send({
+                    "error": "El producto no existe"
+                })
+            } else {
+                res.send({
+                    "removed": removedProduct
+                })
+            }
         }
         catch (error) {
-            console.log("An undetermined error has occured", error);
+            res.send({
+                "error": "El producto no pudo ser eliminado"
+            })
         }
-    })
+    } else {
+        res.send({
+            "error": "El id no es numerico"
+        })
+    }
+})

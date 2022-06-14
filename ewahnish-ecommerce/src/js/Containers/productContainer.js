@@ -99,8 +99,10 @@ export default class Products {
                 fs.promises.writeFile('./src/files/products.txt', JSON.stringify(products),)
                     .then(() => { Products.getAll() })
                     .catch((error) => { console.log("Write error in file products.txt ", error) })
+                return removedProduct;    
             } else {
                 console.log("There is no product with id ", findId);
+                return []
             }
         }
         catch (error) {
