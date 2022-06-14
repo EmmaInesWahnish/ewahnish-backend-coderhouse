@@ -81,10 +81,10 @@ routerProducts.post('/', async (req, res) => {
         price: receive.price,
         thumbnail: receive.thumbnail
     }]
-    if (producto.title !== null) {
+    if (producto) {
         try {
-            const productId = await Products.save(producto);
-            console.log(productId)
+            await Products.getAll()
+            await Products.save(producto);
             try {
                 const products = await Products.getAll();
                 res.send({

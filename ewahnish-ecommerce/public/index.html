@@ -23,18 +23,34 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-  <title>Formularios para ingreso de datos</title>
+  <title>Formularios para alta de productos</title>
 </head>
 
 <body>
+  <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
-  <h2 class="form_title">Formulario para upload de archivos</h2>
-  <form action="/uploadfile" enctype="multipart/form-data" method="POST">
-    <div class="m-2">
-      <input type="file"  name="thisFile">
+  <h2 class="form_title">Formulario para ingreso de productos</h2>
+  <form action="/api/productos" method="POST">
+    <div class="form_title">
+      Title
+    </div>
+    <div>
+      <input type="text" name="title">
     </div>
     <div class="m-2">
-      <input type="submit" value="Upload File" class="form_button">
+      Price
+    </div>
+    <div>
+      <input type="number" name="price">
+    </div>
+    <div class="m-2">
+      Thumbnail
+    </div>
+    <div>
+      <input type="text" name="thumbnail">
+    </div>
+    <div class="m-2">
+      <input type="submit" value="Send" class="form_button">
     </div>
   </form>
 </body>
